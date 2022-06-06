@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+    <!-- Page Content -->
+    <!-- Banner Starts Here -->
+    <div class="heading-page header-text">
+      <section class="page-heading">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="text-content">
+                <h4>Recent Posts</h4>
+                <h2>Our Recent Blog Entries</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    
+    <!-- Banner Ends Here -->
+
+    <section class="call-to-action">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="main-content">
+              <div class="row">
+                <div class="col-lg-8">
+                  
+                  <h4>Hey {{user.first_name}}, Here are your blogs</h4>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="blog-posts grid-system">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="all-blog-posts">
+              <div class="row">
+                {% for i in post %}
+                <div class="col-lg-4">
+                  <div class="blog-post">
+                    <div class="blog-thumb">
+                      <img src="{{i.image.url}}" alt="">
+                    </div>
+                    <div class="down-content">
+                      <span>{{i.category.name}}</span>
+                      <a href="{% url 'detail' post_id=i.id %}"><h4>{{i.title}}</h4></a>
+                      <ul class="post-info">
+                        <li><a href="#">{{i.user.first_name}} {{i.user.last_name}}</a></li>
+                        <li><a href="#">{{i.created_at}}</a></li>
+                      </ul>
+                      <p class="desc">{{i.description}}</p>
+
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                
+                
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </section>
+
+    
+   {% endblock %}

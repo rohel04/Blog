@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% block title %} About Us {% endblock %}
+
+{% load static %}
+
+{% block content %}
+    <!-- Page Content -->
+    <!-- Banner Starts Here -->
+    <div class="heading-page header-text">
+      <section class="page-heading">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="text-content">
+                <h4>Post Details</h4>
+                <h2>Single blog post</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    
+    <!-- Banner Ends Here -->
+
+    <section class="call-to-action">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="main-content">
+              <div class="row">
+                <div class="col-lg-8">
+                  <span>Stand Blog HTML5 Template</span>
+                  <h4>Creative HTML Template For Bloggers!</h4>
+                </div>
+                <div class="col-lg-4">
+                  <div class="main-button">
+                    <a rel="nofollow" href="https://templatemo.com/tm-551-stand-blog" target="_parent">Download Now!</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="blog-posts grid-system">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="all-blog-posts">
+              <div class="row">
+                {% for i in post %}
+                
+                <div class="col-lg-12">
+                  <div class="blog-post">
+                    <div class="blog-thumb">
+                      <img src="{{i.image.url}}">
+                    </div>
+                    <div class="down-content">
+                      <span>{{i.category.name}}</span>
+                     <h4>{{i.title}}</h4>
+                      <ul class="post-info">
+                        <li><a href="#">{{i.user.first_name}} {{i.user.last_name}}</a></li>
+                        <li><a href="#">{{i.created_at}}</a></li>
+                        
+                      </ul>
+                      <p style="text-align:justify">{{i.description}}</p>
+             
+                    </div>
+                  </div>
+                </div>
+                {% if i.user_id == user.id %}
+                <div class="edit m-2" >
+                 <a href="{% url 'edit' post_id=i.id %}"><button class="btn btn-primary">Edit Post</button></a> 
+
+                </div>
+                <div class="delete m-2">
+
+                  <a href="{% url 'delete' post_id=i.id %}"><button class="btn btn-danger">Delete Post</button></a>
+                </div>
+                {% endif %}
+                {% endfor %}
+                
+                
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="sidebar">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="sidebar-item recent-posts">
+                    <div class="sidebar-heading">
+                      {% for i in post %}
+                      <h2 style="color:#F98337">More {{i.category.name}} blogs</h2>
+                      {% endfor %}
+                    </div>
+                    <div class="content">
+                      <ul>
+                        <li><a href="post-details.html">
+                          <h5>Vestibulum id turpis porttitor sapien facilisis scelerisque</h5>
+                          <span>May 31, 2020</span>
+                        </a></li>
+                        
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              
+         
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- others comments -->
+    <div class="col-lg-12">
+      <div class="sidebar-item comments">
+        <div class="sidebar-heading">
+          <h2>{{cmt_num}} comments</h2>
+        </div>
+        {% for cmt in comments %}  
+        <div class="content" style="margin-bottom: 30px; ">
+          <ul>
+            <li>
+              <div class="author-thumb">
+                <img src="..\..\media\post_img\user-default.jpg" style="border-radius: 50%;" > 
+              </div>
+              <div class="right-content" style="padding: 20px;">
+                <h4>{{cmt.user.first_name}}<span>{{ cmt.date }}</span></h4>
+                <p>{{cmt.comment}}</p>
+                {% if cmt.user.id == user.id %}
+                  <a href="{% url 'delete_comment' cmt_id=cmt.id %}">Delete</a>
+                {% endif %}
+              </div>
+            </li>  
+          </ul>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <!-- end of others comment -->
+
+    {% if can_comment%}
+    <!-- comment section -->
+    {% for i in post %}
+    <div class="col-lg-12">
+      <div class="sidebar-item submit-comment">
+        <div class="sidebar-heading">
+          <h2>Your comment</h2>
+        </div>
+        <div class="content">
+          <form id="comment" action="add_comment" method="post">
+            {% csrf_token %}
+            <input type="text" hidden value="{{ i.id }}" name="post_id">
+            <div class="row">
+              <div class="col-lg-12">
+                <fieldset>
+                  <textarea name="comment" rows="6" id="message" placeholder="Type your comment" required=""></textarea>
+                </fieldset>
+              </div>
+              <div class="col-lg-12">
+                <fieldset>
+                  <button type="submit" id="form-submit" class="main-button">Submit</button>
+                </fieldset>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+      <!-- ad -->
+      {% endif %}
+      </div>
+    </section>
+
+    
+   {% endblock %}
